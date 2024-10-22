@@ -69,6 +69,7 @@ public class Welcome {
         signupButton.setMinWidth(150);
 
         loginButton.setOnAction(e -> switchToLogin());
+        signupButton.setOnAction(e -> switchToSignup());
 
         Region buffer = new Region();
         buffer.setMinWidth(100);
@@ -84,6 +85,11 @@ public class Welcome {
     private void switchToLogin(){
         Login login = new Login(stage);
         Scene scene = login.loginScene();
+        stage.setScene(scene);
+    }
+    private void switchToSignup(){
+        Signup signup = new Signup(stage);
+        Scene scene = signup.signupScene();
         stage.setScene(scene);
     }
 }
