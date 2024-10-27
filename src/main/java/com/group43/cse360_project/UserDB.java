@@ -49,7 +49,7 @@ class UserDB {
   }
 
   public static boolean validateLogin(String name, String passwd) throws IOException {
-    var reader = new BufferedReader(new FileReader("/database/users.db"));
+    var reader = new BufferedReader(new FileReader("src/main/resources/com/group43/cse360_project/users.db"));
     String line;
     while ((line = reader.readLine()) != null) {
       if (line.startsWith(name)) {
@@ -62,7 +62,7 @@ class UserDB {
   }
 
   public static void addNewUser(String name, String passwd, UserType type) throws IOException {
-    var writer = new BufferedWriter(new FileWriter("users.db"));
+    var writer = new BufferedWriter(new FileWriter("src/main/resources/com/group43/cse360_project/users.db"));
     writer.write(name + ":" + hashPassword(passwd) + ":" + userTypeToString(type) + "\n");
     writer.close();
   }

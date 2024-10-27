@@ -2,18 +2,14 @@ package com.group43.cse360_project;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.Buffer;
 
 import static com.group43.cse360_project.UserDB.*;
 
@@ -68,6 +64,17 @@ public class Signup {
         TextField emailField = new TextField();
         emailField.setPromptText("Enter email");
 
+        Label typeLabel = new Label("User Type:");
+        typeLabel.setStyle("-fx-font-size: 16px;");
+        RadioButton buyerButton = new RadioButton("Buyer");
+        RadioButton sellerButton = new RadioButton("Seller");
+        ToggleGroup typeGroup = new ToggleGroup();
+        buyerButton.setToggleGroup(typeGroup);
+        sellerButton.setToggleGroup(typeGroup);
+        Region buffer = new Region();
+        buffer.setMinWidth(20);
+        HBox typeBox = new HBox(buyerButton, buffer, sellerButton);
+
 
         // Password Field
         Label passwordLabel = new Label("Password:");
@@ -91,10 +98,12 @@ public class Signup {
         inputGrid.add(idField, 1, 1);
         inputGrid.add(emailLabel, 0, 2);
         inputGrid.add(emailField, 1, 2);
-        inputGrid.add(passwordLabel, 0, 3);
-        inputGrid.add(passwordField, 1, 3);
-        inputGrid.add(confirmPasswordLabel, 0, 4);
-        inputGrid.add(confirmPasswordField, 1, 4);
+        inputGrid.add(typeLabel, 0, 3);
+        inputGrid.add(typeBox, 1, 3);
+        inputGrid.add(passwordLabel, 0, 4);
+        inputGrid.add(passwordField, 1, 4);
+        inputGrid.add(confirmPasswordLabel, 0, 5);
+        inputGrid.add(confirmPasswordField, 1, 5);
 
         root.setCenter(inputGrid);
         
@@ -107,16 +116,20 @@ public class Signup {
             String email = emailField.getText();
             String password = passwordField.getText();
             String confirmPassword = confirmPasswordField.getText();
-            UserType userType = UserType.BUYER;
+            UserType userType = null;
+            if (buyerButton.isSelected()) {
+                userType = UserType.BUYER;
+            }else if (sellerButton.isSelected()) {
+                userType = UserType.SELLER;
+            }
             //TODO: turn sout to label
-            if (name.isEmpty() || id.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            if (name.isEmpty() || id.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || userType == null) {
                 System.out.println("All fields must be filled");
             } else if (!password.equals(confirmPassword)) {
                 System.out.println("Passwords do not match");
             } else {
-                //TODO:This doesnt work
                 try {
-                    UserDB.addNewUser(name, password, userType);
+                    UserDB.addNewUser(id, password, userType);
                     switchToLogin();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -124,7 +137,7 @@ public class Signup {
             }
         });
 
-        VBox buttonBox = new VBox(confirmButton);
+        VBox buttonBox = new VBox(confirmButton, new Label(""));
         buttonBox.setAlignment(Pos.CENTER);
 
         root.setBottom(buttonBox);

@@ -2,16 +2,15 @@ package com.group43.cse360_project;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Login {
     private Stage stage;
@@ -50,10 +49,10 @@ public class Login {
         ************************************************
          */
         // Username Field
-        Label usernameLabel = new Label("Username:");
-        usernameLabel.setStyle("-fx-font-size: 16px;");
-        TextField usernameField = new TextField();
-        usernameField.setPromptText("Enter username");
+        Label idLabel = new Label("ASU ID:");
+        idLabel.setStyle("-fx-font-size: 16px;");
+        TextField idField = new TextField();
+        idField.setPromptText("Enter ID");
 
         // Password Field
         Label passwordLabel = new Label("Password:");
@@ -80,20 +79,46 @@ public class Login {
         //match the text of password fields
         visiblePassword.textProperty().bindBidirectional(passwordField.textProperty());
 
+        Button confirmButton = new Button("Confirm");
+        confirmButton.setStyle("-fx-font-size: 16px;");
+        confirmButton.setOnAction(e -> {
+            String username = idField.getText();
+            String password = passwordField.getText();
+            if (username.isEmpty() || password.isEmpty()) {
+                System.out.println("All fields must be filled");
+            } else {
+                try {
+                    if (UserDB.validateLogin(username, password)) {
+                        switchToPrototype();
+                    }else {
+                        System.out.println("Invalid username or password");
+                    }
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
         //grid of fields
         GridPane inputGrid = new GridPane();
         inputGrid.setAlignment(Pos.CENTER);
         inputGrid.setHgap(10);
         inputGrid.setVgap(10);
-        inputGrid.add(usernameLabel, 0, 0);
-        inputGrid.add(usernameField, 1, 0);
+        inputGrid.add(idLabel, 0, 0);
+        inputGrid.add(idField, 1, 0);
         inputGrid.add(passwordLabel, 0, 1);
         inputGrid.add(passwordField, 1, 1);
         inputGrid.add(showPasswordCheckbox, 1, 2);
         inputGrid.add(visiblePassword, 1, 1);
+        inputGrid.add(confirmButton, 1, 3);
 
         root.setCenter(inputGrid);
 
         return new Scene(root, sceneWidth, sceneHeight);
+    }
+    private void switchToPrototype(){
+        PrototypeScene prototype = new PrototypeScene(stage);
+        Scene scene = prototype.prototypeScene();
+        stage.setScene(scene);
     }
 }
