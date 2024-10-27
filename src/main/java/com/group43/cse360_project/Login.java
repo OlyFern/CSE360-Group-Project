@@ -79,6 +79,8 @@ public class Login {
         //match the text of password fields
         visiblePassword.textProperty().bindBidirectional(passwordField.textProperty());
 
+        Label errorLabel = new Label("");
+
         Button confirmButton = new Button("Confirm");
         confirmButton.setStyle("-fx-font-size: 16px;");
         confirmButton.setOnAction(e -> {
@@ -86,12 +88,14 @@ public class Login {
             String password = passwordField.getText();
             if (username.isEmpty() || password.isEmpty()) {
                 System.out.println("All fields must be filled");
+                errorLabel.setText("All fields must be filled");
             } else {
                 try {
                     if (UserDB.validateLogin(username, password)) {
                         switchToPrototype();
                     }else {
                         System.out.println("Invalid username or password");
+                        errorLabel.setText("Invalid username or password");
                     }
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -111,6 +115,7 @@ public class Login {
         inputGrid.add(showPasswordCheckbox, 1, 2);
         inputGrid.add(visiblePassword, 1, 1);
         inputGrid.add(confirmButton, 1, 3);
+        inputGrid.add(errorLabel, 1, 4);
 
         root.setCenter(inputGrid);
 

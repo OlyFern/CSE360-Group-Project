@@ -87,26 +87,8 @@ public class Signup {
         PasswordField confirmPasswordField = new PasswordField();
         confirmPasswordField.setPromptText("Retype password");
 
-        // Grid of signup fields
-        GridPane inputGrid = new GridPane();
-        inputGrid.setAlignment(Pos.CENTER);
-        inputGrid.setHgap(10);
-        inputGrid.setVgap(10);
-        inputGrid.add(nameLabel, 0, 0);
-        inputGrid.add(nameField, 1, 0);
-        inputGrid.add(idLabel, 0, 1);
-        inputGrid.add(idField, 1, 1);
-        inputGrid.add(emailLabel, 0, 2);
-        inputGrid.add(emailField, 1, 2);
-        inputGrid.add(typeLabel, 0, 3);
-        inputGrid.add(typeBox, 1, 3);
-        inputGrid.add(passwordLabel, 0, 4);
-        inputGrid.add(passwordField, 1, 4);
-        inputGrid.add(confirmPasswordLabel, 0, 5);
-        inputGrid.add(confirmPasswordField, 1, 5);
+        Label errorLabel = new Label("");
 
-        root.setCenter(inputGrid);
-        
         //confirm button
         Button confirmButton = new Button("Confirm");
         confirmButton.setStyle("-fx-font-size: 16px;");
@@ -125,8 +107,10 @@ public class Signup {
             //TODO: turn sout to label
             if (name.isEmpty() || id.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || userType == null) {
                 System.out.println("All fields must be filled");
+                errorLabel.setText("All fields must be filled");
             } else if (!password.equals(confirmPassword)) {
                 System.out.println("Passwords do not match");
+                errorLabel.setText("Passwords do not match");
             } else {
                 try {
                     UserDB.addNewUser(id, password, userType);
@@ -137,10 +121,27 @@ public class Signup {
             }
         });
 
-        VBox buttonBox = new VBox(confirmButton, new Label(""));
-        buttonBox.setAlignment(Pos.CENTER);
+        // Grid of signup fields
+        GridPane inputGrid = new GridPane();
+        inputGrid.setAlignment(Pos.CENTER);
+        inputGrid.setHgap(10);
+        inputGrid.setVgap(10);
+        inputGrid.add(nameLabel, 0, 0);
+        inputGrid.add(nameField, 1, 0);
+        inputGrid.add(idLabel, 0, 1);
+        inputGrid.add(idField, 1, 1);
+        inputGrid.add(emailLabel, 0, 2);
+        inputGrid.add(emailField, 1, 2);
+        inputGrid.add(typeLabel, 0, 3);
+        inputGrid.add(typeBox, 1, 3);
+        inputGrid.add(passwordLabel, 0, 4);
+        inputGrid.add(passwordField, 1, 4);
+        inputGrid.add(confirmPasswordLabel, 0, 5);
+        inputGrid.add(confirmPasswordField, 1, 5);
+        inputGrid.add(confirmButton, 1, 6);
+        inputGrid.add(errorLabel, 1, 7);
 
-        root.setBottom(buttonBox);
+        root.setCenter(inputGrid);
 
         return new Scene(root, sceneWidth, sceneHeight);
     }
