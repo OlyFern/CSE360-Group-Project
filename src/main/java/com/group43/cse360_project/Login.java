@@ -92,7 +92,7 @@ public class Login {
             } else {
                 try {
                     if (UserDB.validateLogin(username, password)) {
-                        switchToPrototype();
+                        switchToBrowse();
                     }else {
                         System.out.println("Invalid username or password");
                         errorLabel.setText("Invalid username or password");
@@ -121,9 +121,9 @@ public class Login {
 
         return new Scene(root, sceneWidth, sceneHeight);
     }
-    private void switchToPrototype(){
-        PrototypeScene prototype = new PrototypeScene(stage);
-        Scene scene = prototype.prototypeScene();
+    private void switchToBrowse(){
+        Browse prototype = new Browse(stage);
+        Scene scene = prototype.browseScene();
         stage.setScene(scene);
     }
 }
