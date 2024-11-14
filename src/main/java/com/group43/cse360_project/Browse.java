@@ -97,13 +97,12 @@ public class Browse {
         Rectangle cover = new Rectangle(100, 140);
         cover.setStyle("-fx-fill: white; -fx-stroke: darkgrey;");
         cover.setOnMouseClicked(e -> switchToBook());
-        Label coverLabel = new Label("Cover");
-        coverLabel.setAlignment(Pos.CENTER);
 
         Label priceLabel = new Label("Price");
         Label titleLabel = new Label("Title, Author");
+        Label conditionLabel = new Label("Condition");
 
-        entry.getChildren().addAll(cover, coverLabel, priceLabel, titleLabel);
+        entry.getChildren().addAll(cover, priceLabel, titleLabel, conditionLabel);
         return entry;
     }
 
