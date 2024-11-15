@@ -24,11 +24,14 @@ public class Book {
         double sceneWidth = 1200;
         double sceneHeight = 675;
 
+        //Header
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: white;");
         HBox header = createHeader();
         root.setTop(header);
-         //this is the book cover
+
+        //Book
+        //TODO: access Boookdb
         Rectangle cover = new Rectangle(330, 462);
         cover.setStyle("-fx-fill: white; -fx-stroke: darkgrey;");
         VBox coverContainer = new VBox(cover);
@@ -37,6 +40,10 @@ public class Book {
 
         root.setLeft(coverContainer);
 
+        /*******************************************************
+         * List details of the book
+         * TODO: Access Bookdb
+         ******************************************************/
         Label titleLabel = new Label("Title:\t\t\t");
         titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         Label title = new Label("Placeholder");
@@ -86,11 +93,13 @@ public class Book {
         HBox sellPriceBox = new HBox(sellPriceLabel, sellPrice);
         sellPriceBox.setPadding(new Insets(10));
 
+        //put all the details in a VBOX
         VBox bookDetails = new VBox(titleBox, authorBox, genreBox, conditionBox, quantityBox, originalPriceBox, sellPriceBox);
         bookDetails.setAlignment(Pos.CENTER);
         bookDetails.setPadding(new Insets(50));
         root.setCenter(bookDetails);
 
+        //add to cart button
         Button checkoutButton = new Button();
         checkoutButton.setText("Add to Cart");
         VBox checkoutContainer = new VBox(checkoutButton);
