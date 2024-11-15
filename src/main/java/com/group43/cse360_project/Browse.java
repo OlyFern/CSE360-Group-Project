@@ -27,7 +27,10 @@ public class Browse {
         HBox header = createHeader();
         root.setTop(header);
 
-
+        /*******************************************************
+         * Filter Panel
+         * TODO: Access Bookdb
+         ******************************************************/
         VBox filterPanel = new VBox(10);
         filterPanel.setPadding(new Insets(10));
         filterPanel.setStyle("-fx-background-color: white; -fx-border-color: darkgrey;");
@@ -55,9 +58,17 @@ public class Browse {
 
         root.setLeft(filterPanel);
 
+        /*******************************************************
+         * Book grid
+         ******************************************************/
+
         GridPane bookGrid = createBookGrid();
         bookGrid.setStyle("-fx-background-color: white; -fx-border-color: darkgrey;");
         root.setCenter(bookGrid);
+
+        /*******************************************************
+         * Pagination (the arrows to change page)
+         ******************************************************/
 
         HBox pagination = new HBox(10);
         pagination.setAlignment(Pos.CENTER);
@@ -75,6 +86,10 @@ public class Browse {
     }
 
     private GridPane createBookGrid() {
+        /*******************************************************
+         * GridPane
+         * TODO: not create Book entry, access bookdb
+         ******************************************************/
         GridPane grid = new GridPane();
         grid.setHgap(20);
         grid.setVgap(20);
