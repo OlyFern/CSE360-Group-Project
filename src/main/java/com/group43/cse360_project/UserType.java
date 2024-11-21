@@ -6,7 +6,8 @@ public enum UserType {
     SELLER,
     RESTRICTED;
 
-    public static String userTypeToString(UserType type) {
+    // Database flag creation
+    public static String getUserTypeDBFlag(UserType type) {
         return switch (type) {
             case ADMIN  -> "A";
             case BUYER  -> "B";
@@ -15,8 +16,9 @@ public enum UserType {
         };
     }
 
-    public static UserType parseUserType(String str) {
-        return switch (str) {
+    // Database flag parsing
+    public static UserType parseUserTypeDBFlag(String flag) {
+        return switch (flag) {
             case "A" -> ADMIN;
             case "B" -> BUYER;
             case "S" -> SELLER;
