@@ -95,7 +95,9 @@ public class Login {
                         User user = UserDB.getUser(username);
                         if(user.getType() == UserType.BUYER){
                             switchToBrowse(user);
-                        }else{
+                        }else if (user.getType() == UserType.SELLER){
+                            switchToSeller(user);
+                        } else{
                             switchToPrototype(); //TODO: change to seller and eventually admin
                         }
                     }else {
@@ -134,6 +136,11 @@ public class Login {
     private void switchToPrototype() throws IOException {
         PrototypeScene prototype = new PrototypeScene(stage);
         Scene scene = prototype.prototypeScene();
+        stage.setScene(scene);
+    }
+    private void switchToSeller(User user) throws IOException {
+        SellersPage seller = new SellersPage(stage);
+        Scene scene = seller.getScene(user);
         stage.setScene(scene);
     }
 }
