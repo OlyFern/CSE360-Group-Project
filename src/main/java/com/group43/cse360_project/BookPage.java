@@ -13,10 +13,10 @@ import javafx.stage.Stage;
 
 import static com.group43.cse360_project.Header.createHeader;
 
-public class Book {
+public class BookPage {
     private Stage stage;
 
-    public Book(Stage stage) {
+    public BookPage(Stage stage) {
         this.stage = stage;
     }
 

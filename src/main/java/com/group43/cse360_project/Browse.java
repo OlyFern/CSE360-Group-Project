@@ -7,9 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import jdk.swing.interop.SwingInterOpUtils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -161,7 +159,7 @@ public class Browse {
     }
 
     private void switchToBook(){
-        Book book = new Book(stage);
+        BookPage book = new BookPage(stage);
         Scene scene = book.bookScene();
         stage.setScene(scene);
     }
