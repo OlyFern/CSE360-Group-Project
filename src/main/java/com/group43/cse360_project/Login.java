@@ -98,7 +98,7 @@ public class Login {
                         }else if (user.getType() == UserType.SELLER){
                             switchToSeller(user);
                         } else{
-                            switchToPrototype(); //TODO: change to seller and eventually admin
+                            switchToPrototype(); //TODO: change to eventually admin
                         }
                     }else {
                         System.out.println("Invalid username or password");

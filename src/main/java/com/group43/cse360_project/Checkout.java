@@ -16,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 
 public class Checkout {
@@ -33,14 +34,13 @@ public class Checkout {
         this.stage = stage;
     }
 
-    public Scene checkoutScene() {
+    public Scene checkoutScene(User user) {
         for (int i = 1; i <= 10; i++){
             int amount = (int) (Math.random() * 10) + 1;
             listofItems.getChildren().add(createList("NAME OF TITLE" + i, amount , conditions, (amount * 10)));
         }
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #F4F4D8;");
-
         /*
          * Texts
          */

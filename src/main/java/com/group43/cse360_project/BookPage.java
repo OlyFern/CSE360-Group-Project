@@ -28,7 +28,7 @@ public class BookPage {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: white;");
 
-        HBox header = createHeader(stage);
+        HBox header = createHeader(stage, user);
         root.setTop(header);
 
         //Book

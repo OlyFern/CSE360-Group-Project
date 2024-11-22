@@ -18,7 +18,7 @@ public class Header {
      * TODO: Needs user information
      ******************************************************/
 
-    public static HBox createHeader(Stage stage) {
+    public static HBox createHeader(Stage stage, User user) {
         //Background
         HBox header = new HBox(20);
         header.setPadding(new Insets(10));
@@ -56,7 +56,7 @@ public class Header {
         cartLabel.setStyle("-fx-font-size: 24px");
         cartButton.setGraphic(cartLabel);
         cartButton.setMinSize(50, 50);
-        cartButton.setOnAction(e -> switchToCart(stage));
+        cartButton.setOnAction(e -> switchToCart(stage, user));
 
         //spacers
         Region spacer = new Region();
@@ -72,9 +72,9 @@ public class Header {
         return header;
     }
 
-    private static void switchToCart(Stage stage) {
+    private static void switchToCart(Stage stage, User user) {
         Checkout cart = new Checkout(stage);
-        Scene scene = cart.checkoutScene();
+        Scene scene = cart.checkoutScene(user);
         stage.setScene(scene);
     }
 

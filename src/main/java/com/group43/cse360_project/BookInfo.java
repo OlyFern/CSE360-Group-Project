@@ -20,14 +20,14 @@ public class BookInfo {
         this.stage = stage;
     }
 
-    public Scene bookScene(){
+    public Scene bookScene(User user){
         double sceneWidth = 1200;
         double sceneHeight = 675;
 
         //Header
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: white;");
-        HBox header = createHeader(stage);
+        HBox header = createHeader(stage, user);
         root.setTop(header);
 
         //Book

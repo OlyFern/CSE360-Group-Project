@@ -31,7 +31,7 @@ public class Browse {
         double sceneHeight = 675;
         this.user = user;
 
-        HBox header = createHeader(stage);
+        HBox header = createHeader(stage, user);
         root.setTop(header);
 
         /*******************************************************
