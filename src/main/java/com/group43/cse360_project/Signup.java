@@ -98,7 +98,7 @@ public class Signup {
             String email = emailField.getText();
             String password = passwordField.getText();
             String confirmPassword = confirmPasswordField.getText();
-            UserType userType = null;
+            UserType userType = UserType.RESTRICTED;
             if (buyerButton.isSelected()) {
                 userType = UserType.BUYER;
             }else if (sellerButton.isSelected()) {

@@ -5,14 +5,13 @@
 
 package com.group43.cse360_project;
 
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
+
+import static com.group43.cse360_project.UserType.parseUserTypeDBFlag;
 
 class UserDB {
   private static String hashPassword(String passwd) {
@@ -41,11 +40,23 @@ class UserDB {
     }
   }
 
-  public static enum UserType {
-    ADMIN,
-    BUYER,
-    SELLER,
-    RESTRICTED
+
+  public static User getUser(String asuID) throws IOException {
+    var reader = new BufferedReader(new FileReader("src/main/resources/com/group43/cse360_project/users.db"));
+    String line;
+    while ((line = reader.readLine())!= null) {
+      String[] user = line.split(":");
+      if (Objects.equals(user[0], asuID)) {
+        return new User(
+                asuID,
+                user[1],
+                parseUserTypeDBFlag(user[2]),
+                user[3],
+                user[4]);
+      }
+    }
+    reader.close();
+    return null;
   }
 
   public static boolean validateLogin(String name, String passwd) throws IOException {

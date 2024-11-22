@@ -40,6 +40,7 @@ public class BookDB {
 
     }
 
+
     public static LinkedList<Book> getAllBooks() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/com/group43/cse360_project/books.db"));
         LinkedList<Book> books = new LinkedList<Book>();
