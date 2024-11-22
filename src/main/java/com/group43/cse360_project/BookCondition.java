@@ -2,7 +2,8 @@ package com.group43.cse360_project;
 
 public enum BookCondition {
     NEW,
-    USED;
+    USED,
+    HEAVY;
 
     // Database flag creation
     public static String getBookConditionDBFlag(BookCondition cond) {

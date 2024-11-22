@@ -3,6 +3,7 @@ package com.group43.cse360_project;
 import java.io.IOException;
 
 public class Book {
+    private String key;
     private String title;
     private String author;
     private BookGenre genre;
@@ -12,8 +13,9 @@ public class Book {
     private int quantity;
     private ListingStatus status;
 
-    public Book(String title, String author, BookGenre genre, BookCondition condition,
+    public Book(String key, String title, String author, BookGenre genre, BookCondition condition,
                 String seller, float price, int quantity, ListingStatus status) {
+        this.key = key;
         this.title = title;
         this.author = author;
         this.genre = genre;
@@ -22,6 +24,10 @@ public class Book {
         this.price = price;
         this.quantity = quantity;
         this.status = status;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public String getTitle() {
@@ -66,7 +72,7 @@ public class Book {
     // String representation (Same as Database entry)
     @Override
     public String toString() {
-        return title + ":" + author + ":" + BookGenre.getBookGenreDBFlag(genre) + ":" +
+        return key + ":" + title + ":" + author + ":" + BookGenre.getBookGenreDBFlag(genre) + ":" +
                 BookCondition.getBookConditionDBFlag(condition) + ":" + seller + ":" +
                 Float.toString(price) + ":" + Integer.toString(quantity) + ":" +
                 ListingStatus.getListingStatusDBFlag(status);

@@ -7,12 +7,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
 
+import static com.group43.cse360_project.BookDB.getAllBooks;
 import static com.group43.cse360_project.Header.createHeader;
 
 public class Browse {
@@ -119,34 +122,44 @@ public class Browse {
         grid.setVgap(20);
         grid.setPadding(new Insets(20));
 
-        var reader = new BufferedReader(new FileReader("src/main/resources/com/group43/cse360_project/books.db"));
-        String line;
+        LinkedList<Book> books = getAllBooks();
+
+        int i = 0;
         for (int row = 0; row < 2; row++) {
             int col = 0;
-            while (col < 7 && (line = reader.readLine()) != null) {
-                String[] book = line.split(":");
-                VBox bookEntry = createBookEntry(book);
+            while (col < 7  && i < books.size()) {
+                VBox bookEntry = createBookEntry(books.get(i));
                 grid.add(bookEntry, col, row);
                 col++;
+                i++;
             }
         }
 
         return grid;
     }
 
-    private VBox createBookEntry(String[] book) {
+    private VBox createBookEntry(Book book) {
         VBox entry = new VBox(5);
         entry.setAlignment(Pos.CENTER);
 
-        Image coverImage = new Image(book[0]);
-        ImageView coverImageView = new ImageView(coverImage);
-        coverImageView.setFitWidth(100);
-        coverImageView.setFitHeight(140);
-        coverImageView.setOnMouseClicked(e -> switchToBook());
+        Rectangle coverImageView = new Rectangle(100, 140);
+        //Image coverImage = new Image(book.getKey() + ".png");
+        //ImageView coverImageView = new ImageView(coverImage);
+        //coverImageView.setFitWidth(100);
+       // coverImageView.setFitHeight(140);
+        //coverImageView.setOnMouseClicked(e -> switchToBook());
 
-        Label priceLabel = new Label(book[1]);
-        Label titleLabel = new Label(book[2] + ", " + book[3]);
-        Label conditionLabel = new Label(book[4]);
+        Label priceLabel = new Label(Float.toString(book.getPrice()));
+        Label titleLabel = new Label(book.getTitle() + ", " + book.getAuthor());
+        Label conditionLabel = new Label();
+        if(book.getCondition() == BookCondition.NEW) {
+            conditionLabel.setText("New");
+        } else if (book.getCondition() == BookCondition.USED) {
+            conditionLabel.setText("Moderately Used");
+        }else{
+            conditionLabel.setText("Heavily Used");
+        }
+
 
         entry.getChildren().addAll(coverImageView, priceLabel, titleLabel, conditionLabel);
         return entry;
