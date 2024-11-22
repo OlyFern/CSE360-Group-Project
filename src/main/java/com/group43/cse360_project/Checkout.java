@@ -18,7 +18,7 @@ import javafx.scene.paint.Color;
 import java.util.Iterator;
 
 
-public class Checkout extends Application {
+public class Checkout {
     private String conditions = "new";
     private Label subtotalLabel= new Label();
     private Label taxLabel= new Label();
@@ -28,14 +28,9 @@ public class Checkout extends Application {
     private VBox listofItems = new VBox(50);
 
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    public void start(Stage primaryStage) {
-        primaryStage.setScene(checkoutScene());
-        primaryStage.setMaximized(true);
-        primaryStage.show();
+    private Stage stage;
+    public Checkout(Stage stage) {
+        this.stage = stage;
     }
 
     public Scene checkoutScene() {

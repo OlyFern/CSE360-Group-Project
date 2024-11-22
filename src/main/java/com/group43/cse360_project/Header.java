@@ -56,6 +56,7 @@ public class Header {
         cartLabel.setStyle("-fx-font-size: 24px");
         cartButton.setGraphic(cartLabel);
         cartButton.setMinSize(50, 50);
+        cartButton.setOnAction(e -> switchToCart(stage));
 
         //spacers
         Region spacer = new Region();
@@ -70,6 +71,13 @@ public class Header {
         header.getChildren().addAll(logoImageView, spacer2, buyButton, spacer3, sellButton, spacer, cartButton);
         return header;
     }
+
+    private static void switchToCart(Stage stage) {
+        Checkout cart = new Checkout(stage);
+        Scene scene = cart.checkoutScene();
+        stage.setScene(scene);
+    }
+
     private static void switchToWelcome(Stage stage)  {
         Welcome welcome = new Welcome(stage);
         Scene scene = welcome.welcomeScene();
