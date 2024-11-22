@@ -113,7 +113,7 @@ public class Signup {
                 errorLabel.setText("Passwords do not match");
             } else {
                 try {
-                    UserDB.addNewUser(id, password, userType);
+                    UserDB.addNewUser(id, password, userType, name, email);
                     switchToLogin();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);

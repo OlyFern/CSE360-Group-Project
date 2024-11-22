@@ -61,9 +61,9 @@ class UserDB {
     return false;
   }
 
-  public static void addNewUser(String name, String passwd, UserType type) throws IOException {
+  public static void addNewUser(String asuID, String passwd, UserType type, String name, String email) throws IOException {
     var writer = new BufferedWriter(new FileWriter("src/main/resources/com/group43/cse360_project/users.db"));
-    writer.write(name + ":" + hashPassword(passwd) + ":" + userTypeToString(type) + "\n");
+    writer.write(asuID + ":" + hashPassword(passwd) + ":" + userTypeToString(type) + ":" + name + ":" + email + "\n");
     writer.close();
   }
   

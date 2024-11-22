@@ -9,6 +9,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import jdk.swing.interop.SwingInterOpUtils;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 import static com.group43.cse360_project.Header.createHeader;
 
@@ -19,7 +24,7 @@ public class Browse {
         this.stage = stage;
     }
 
-    public Scene browseScene() {
+    public Scene browseScene(int page) throws IOException {
         BorderPane root = new BorderPane();
         double sceneWidth = 1200;
         double sceneHeight = 675;
@@ -62,7 +67,7 @@ public class Browse {
          * Book grid
          ******************************************************/
 
-        GridPane bookGrid = createBookGrid();
+        GridPane bookGrid = createBookGrid(page);
         bookGrid.setStyle("-fx-background-color: white; -fx-border-color: darkgrey;");
         root.setCenter(bookGrid);
 
@@ -78,14 +83,35 @@ public class Browse {
         Button nextButton = new Button("→");
         pagination.getChildren().addAll(prevButton, nextButton);
         pagination.setStyle("-fx-background-color: lightgrey");
-
+        prevButton.setOnAction(e -> {
+            if(page <= 1){
+                return;
+            }else{
+                try {
+                    reloadBrowse(page-1);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        nextButton.setOnAction(e -> {
+            if(bookGrid.getChildren().isEmpty()){
+                return;
+            }else{
+                try {
+                    reloadBrowse(page + 1);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
 
         root.setBottom(pagination);
 
         return new Scene(root, sceneWidth, sceneHeight);
     }
 
-    private GridPane createBookGrid() {
+    private GridPane createBookGrid(int page) throws IOException {
         /*******************************************************
          * GridPane
          * TODO: not create Book entry, access bookdb
@@ -95,30 +121,43 @@ public class Browse {
         grid.setVgap(20);
         grid.setPadding(new Insets(20));
 
+        var reader = new BufferedReader(new FileReader("src/main/resources/com/group43/cse360_project/books.db"));
+        String line;
         for (int row = 0; row < 2; row++) {
-            for (int col = 0; col < 7; col++) {
-                VBox bookEntry = createBookEntry();
+            int col = 0;
+            while (col < 7 && (line = reader.readLine()) != null) {
+                String[] book = line.split(":");
+                VBox bookEntry = createBookEntry(book);
                 grid.add(bookEntry, col, row);
+                col++;
             }
         }
 
         return grid;
     }
 
-    private VBox createBookEntry() {
+    private VBox createBookEntry(String[] book) {
         VBox entry = new VBox(5);
         entry.setAlignment(Pos.CENTER);
 
-        Rectangle cover = new Rectangle(100, 140);
-        cover.setStyle("-fx-fill: white; -fx-stroke: darkgrey;");
-        cover.setOnMouseClicked(e -> switchToBook());
+        Image coverImage = new Image(book[0]);
+        ImageView coverImageView = new ImageView(coverImage);
+        coverImageView.setFitWidth(100);
+        coverImageView.setFitHeight(140);
+        coverImageView.setOnMouseClicked(e -> switchToBook());
 
-        Label priceLabel = new Label("Price");
-        Label titleLabel = new Label("Title, Author");
-        Label conditionLabel = new Label("Condition");
+        Label priceLabel = new Label(book[1]);
+        Label titleLabel = new Label(book[2] + ", " + book[3]);
+        Label conditionLabel = new Label(book[4]);
 
-        entry.getChildren().addAll(cover, priceLabel, titleLabel, conditionLabel);
+        entry.getChildren().addAll(coverImageView, priceLabel, titleLabel, conditionLabel);
         return entry;
+    }
+
+    private void reloadBrowse(int page) throws IOException {
+        Browse browse = new Browse(stage);
+        Scene scene = browse.browseScene(page);
+        stage.setScene(scene);
     }
 
     private void switchToBook(){

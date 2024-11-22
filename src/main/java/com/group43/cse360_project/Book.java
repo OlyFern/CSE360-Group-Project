@@ -27,11 +27,12 @@ public class Book {
         //Header
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: white;");
+
         HBox header = createHeader();
         root.setTop(header);
 
         //Book
-        //TODO: access Boookdb
+        //TODO: access Bookdb
         Rectangle cover = new Rectangle(330, 462);
         cover.setStyle("-fx-fill: white; -fx-stroke: darkgrey;");
         VBox coverContainer = new VBox(cover);
