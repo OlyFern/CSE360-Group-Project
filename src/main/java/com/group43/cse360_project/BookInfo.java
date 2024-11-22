@@ -27,7 +27,7 @@ public class BookInfo {
         //Header
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: white;");
-        HBox header = createHeader();
+        HBox header = createHeader(stage);
         root.setTop(header);
 
         //Book

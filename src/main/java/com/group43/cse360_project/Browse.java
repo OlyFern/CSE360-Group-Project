@@ -20,17 +20,18 @@ import static com.group43.cse360_project.Header.createHeader;
 
 public class Browse {
     private Stage stage;
-
+    private User user;
     public Browse(Stage stage) {
         this.stage = stage;
     }
 
-    public Scene browseScene(int page) throws IOException {
+    public Scene browseScene(int page, User user) throws IOException {
         BorderPane root = new BorderPane();
         double sceneWidth = 1200;
         double sceneHeight = 675;
+        this.user = user;
 
-        HBox header = createHeader();
+        HBox header = createHeader(stage);
         root.setTop(header);
 
         /*******************************************************
@@ -89,7 +90,7 @@ public class Browse {
                 return;
             }else{
                 try {
-                    reloadBrowse(page-1);
+                    reloadBrowse(page-1, user);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -100,7 +101,7 @@ public class Browse {
                 return;
             }else{
                 try {
-                    reloadBrowse(page + 1);
+                    reloadBrowse(page + 1, user);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -147,7 +148,13 @@ public class Browse {
         //ImageView coverImageView = new ImageView(coverImage);
         //coverImageView.setFitWidth(100);
        // coverImageView.setFitHeight(140);
-        //coverImageView.setOnMouseClicked(e -> switchToBook());
+        coverImageView.setOnMouseClicked(e -> {
+            try {
+                switchToBook(user);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         Label priceLabel = new Label(Float.toString(book.getPrice()));
         Label titleLabel = new Label(book.getTitle() + ", " + book.getAuthor());
@@ -165,15 +172,15 @@ public class Browse {
         return entry;
     }
 
-    private void reloadBrowse(int page) throws IOException {
+    private void reloadBrowse(int page, User user) throws IOException {
         Browse browse = new Browse(stage);
-        Scene scene = browse.browseScene(page);
+        Scene scene = browse.browseScene(page, user);
         stage.setScene(scene);
     }
 
-    private void switchToBook(){
+    private void switchToBook(User user) throws IOException {
         BookPage book = new BookPage(stage);
-        Scene scene = book.bookScene();
+        Scene scene = book.bookScene(user);
         stage.setScene(scene);
     }
 

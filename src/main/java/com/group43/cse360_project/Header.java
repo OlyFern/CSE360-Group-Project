@@ -2,12 +2,14 @@ package com.group43.cse360_project;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 
 public class Header {
     /*******************************************************
@@ -15,7 +17,8 @@ public class Header {
      * TODO: Only show options if a user has a specific account type. Low priority
      * TODO: Needs user information
      ******************************************************/
-    public static HBox createHeader() {
+
+    public static HBox createHeader(Stage stage) {
         //Background
         HBox header = new HBox(20);
         header.setPadding(new Insets(10));
@@ -27,6 +30,8 @@ public class Header {
         ImageView logoImageView = new ImageView(logoImage);
         logoImageView.setFitHeight(100);
         logoImageView.setFitWidth(100);
+
+        logoImageView.setOnMouseClicked(e -> switchToWelcome(stage));
 
         //buy button
         //TODO: Add functionality
@@ -65,4 +70,8 @@ public class Header {
         header.getChildren().addAll(logoImageView, spacer2, buyButton, spacer3, sellButton, spacer, cartButton);
         return header;
     }
-}
+    private static void switchToWelcome(Stage stage)  {
+        Welcome welcome = new Welcome(stage);
+        Scene scene = welcome.welcomeScene();
+        stage.setScene(scene);
+    }}

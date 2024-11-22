@@ -94,9 +94,9 @@ public class Login {
                     if (UserDB.validateLogin(username, password)) {
                         User user = UserDB.getUser(username);
                         if(user.getType() == UserType.BUYER){
-                         switchToBrowse();
+                            switchToBrowse(user);
                         }else{
-                            switchToPrototype();
+                            switchToPrototype(); //TODO: change to seller and eventually admin
                         }
                     }else {
                         System.out.println("Invalid username or password");
@@ -126,9 +126,9 @@ public class Login {
 
         return new Scene(root, sceneWidth, sceneHeight);
     }
-    private void switchToBrowse() throws IOException {
+    private void switchToBrowse(User user) throws IOException {
         Browse prototype = new Browse(stage);
-        Scene scene = prototype.browseScene(1);
+        Scene scene = prototype.browseScene(1, user);
         stage.setScene(scene);
     }
     private void switchToPrototype() throws IOException {
