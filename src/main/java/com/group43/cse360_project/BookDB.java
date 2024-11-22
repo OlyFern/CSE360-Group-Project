@@ -20,6 +20,7 @@ public class BookDB {
     // Creates new book entry in the database (ListingStatus always set to PENDING)
     public static void addNewBook(String key, String title, String author, BookGenre genre, BookCondition cond,
                                   String seller, float price, int quant) throws IOException {
+        float roundedValue = Math.round(price * 100) / 100.0f;
         BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/com/group43/cse360_project/books.db"));
         writer.write(
                         key + ":" +
@@ -28,7 +29,7 @@ public class BookDB {
                         BookGenre.getBookGenreDBFlag(genre) + ":" +
                         BookCondition.getBookConditionDBFlag(cond) + ":" +
                         seller + ":" +
-                        Float.toString(price) + ":" +
+                        Float.toString(roundedValue) + ":" +
                         Integer.toString(quant) + ":" +
                         ListingStatus.getListingStatusDBFlag(ListingStatus.PENDING) + "\n"
         );
