@@ -14,8 +14,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
-
-import java.util.Iterator;
 import java.util.LinkedList;
 
 
@@ -37,7 +35,7 @@ public class Checkout {
     public Scene checkoutScene(User user) {
         for (int i = 1; i <= 10; i++){
             int amount = (int) (Math.random() * 10) + 1;
-            listofItems.getChildren().add(createList("NAME OF TITLE" + i, amount , conditions, (amount * 10)));
+            listofItems.getChildren().add(createList("NAME OF TITLE" + i, amount , conditions, 10));
         }
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #F4F4D8;");
@@ -243,7 +241,7 @@ public class Checkout {
         Label titleLabel = new Label("Title\n" + title);
         Label quantityLabel = new Label("Quantity\n" + quantity);
         Label conditionLabel = new Label("Condition\n" + condition);
-        Label priceLabel = new Label("Price\n $" + price);
+        Label priceLabel = new Label("Price\n $" + String.format("%.2f", price * quantity));
 
         titleLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #264252");
         quantityLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #264252");
@@ -257,8 +255,22 @@ public class Checkout {
         deleteImageView.setFitHeight(15);
 
         Button deleteButton = new Button("Delete", deleteImageView);
-        deleteButton.setOnAction(e -> {listofItems.getChildren().remove(deleteButton.getParent());
-                                updateTotals();});
+        deleteButton.setOnAction(e -> {
+            HBox parent = (HBox) deleteButton.getParent();
+            Label quantityLabelin = (Label) parent.getChildren().get(1);
+
+            int currentQuantity = Integer.parseInt(quantityLabelin.getText().split("\n")[1].trim());
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                quantityLabel.setText("Quantity\n" + currentQuantity);
+                double updatePrice = price * currentQuantity;
+                priceLabel.setText("Price\n $" + String.format("%.2f", updatePrice));
+            }
+            else{
+                listofItems.getChildren().remove(deleteButton.getParent());
+            }
+            updateTotals();
+        });
 
         HBox cartlayout = new HBox(20);
         cartlayout.setAlignment(Pos.CENTER_LEFT);
@@ -271,12 +283,11 @@ public class Checkout {
 
     private void updateTotals(){
         double subTotal = 0;
-        Iterator<Node> iterator = listofItems.getChildren().iterator();
-        while (iterator.hasNext() ){
-            Node item = iterator.next();
-            HBox  prices = (HBox) item;
-            Double price = (Double) prices.getUserData();
-            if (price != null) {
+        for(Node item : listofItems.getChildren()) {
+            if (item instanceof HBox itembox) {
+                Label priceL = (Label) itembox.getChildren().get(3);
+                String priceText = priceL.getText().split("\\$")[1].trim();
+                double price = Double.parseDouble(priceText);
                 subTotal += price;
             }
         }
