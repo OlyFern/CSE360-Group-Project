@@ -121,9 +121,9 @@ public class Login {
 
         return new Scene(root, sceneWidth, sceneHeight);
     }
-    private void switchToBrowse(){
+    private void switchToBrowse() throws IOException {
         Browse prototype = new Browse(stage);
-        Scene scene = prototype.browseScene();
+        Scene scene = prototype.browseScene(1);
         stage.setScene(scene);
     }
 }
