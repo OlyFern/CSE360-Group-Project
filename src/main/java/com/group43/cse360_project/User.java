@@ -8,7 +8,7 @@ public class User {
     private UserType type;
     private String name;
     private String email;
-    private LinkedList<String> cart;
+    private LinkedList<Book> cart;
 
     public User(String asuID, String password, UserType type, String name, String email) {
         this.asuID = asuID;
@@ -34,14 +34,14 @@ public class User {
         return email;
     }
 
-    public LinkedList<String> getCart() {
+    public LinkedList<Book> getCart() {
         return cart;
     }
 
-    public void addToCart(String book){
+    public void addToCart(Book book){
         cart.add(book);
     }
-    public void removeFromCart(String book){
+    public void removeFromCart(Book book){
         cart.remove(book);
     }
 
