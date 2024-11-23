@@ -7,11 +7,7 @@
 
 package com.group43.cse360_project;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -38,9 +34,29 @@ public class BookDB {
         writer.close();
     }
 
-    // Updates a book entry in the database from a given book class (New quantity after a sale or listing)
-    public static void updateQuantity(Book book, int oldQuantity) throws IOException {
+    // Updates a book entry in the database from a given book class (Checks key and title)
+    public static void updateBook(Book book) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/com/group43/cse360_project/books.db"));
+        StringBuffer buffer = new StringBuffer();
+        String line;
 
+        while ((line = reader.readLine()) != null) {
+            if (line.startsWith(book.getKey() + ":" + book.getTitle())) {
+                line = book.getKey() + ":" + book.getTitle() + ":" + book.getAuthor() + ":" +
+                        BookGenre.getBookGenreDBFlag(book.getGenre()) + ":" +
+                        BookCondition.getBookConditionDBFlag(book.getCondition()) + ":" +
+                        book.getSeller() + ":" + Float.toString(book.getPrice()) + ":" +
+                        Integer.toString(book.getQuantity()) +
+                        ListingStatus.getListingStatusDBFlag(book.getListingStatus());
+            }
+
+            buffer.append(line);
+            buffer.append("\n");
+        }
+
+        FileOutputStream out = new FileOutputStream("src/main/resources/com/group43/cse360_project/books.db");
+        out.write(buffer.toString().getBytes());
+        out.close();
     }
 
     // Returns a linked list of all books in the database
