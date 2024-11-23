@@ -7,11 +7,19 @@ public enum BookCondition {
 
     // Database flag creation
     public static String getBookConditionDBFlag(BookCondition cond) {
-        return (cond == NEW) ? "N" : "U";
+        return switch (cond) {
+            case NEW   -> "N";
+            case USED  -> "U";
+            case HEAVY -> "H";
+        };
     }
 
     // Database flag parsing
     public static BookCondition parseBookConditionDBFlag(String flag) {
-        return (flag.compareToIgnoreCase("N") == 0) ? NEW : USED;
+        return switch (flag) {
+            case "N" -> NEW;
+            case "U" -> USED;
+            default  -> HEAVY;
+        };
     }
 }
