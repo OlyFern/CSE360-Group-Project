@@ -38,7 +38,7 @@ public enum BookCondition {
     public static String bookConditionAsString(BookCondition cond) {
         return switch (cond) {
             case NEW  -> "Like New";
-            case USED -> "Lightly Used";
+            case USED -> "Moderately Used";
             default   -> "Heavily Used";
         };
     }
