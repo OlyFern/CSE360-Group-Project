@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import static com.group43.cse360_project.BookGenre.bookGenreAsString;
@@ -107,11 +108,22 @@ public class BookPage {
         VBox checkoutContainer = new VBox(checkoutButton);
         checkoutContainer.setAlignment(Pos.BOTTOM_RIGHT);
         checkoutContainer.setPadding(new Insets(80));
-        checkoutButton.setOnAction(e -> {user.addToCart(book);});
+        checkoutButton.setOnAction(e -> {user.addToCart(book);
+            try {
+                switchToBrowse(user);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         root.setRight(checkoutContainer);
 
 
         return new Scene(root, sceneWidth, sceneHeight);
+    }
+    private void switchToBrowse(User user) throws IOException {
+        Browse prototype = new Browse(stage);
+        Scene scene = prototype.browseScene(1, user, 0);
+        stage.setScene(scene);
     }
 }
