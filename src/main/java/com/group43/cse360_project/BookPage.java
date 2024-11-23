@@ -101,6 +101,7 @@ public class BookPage {
         VBox checkoutContainer = new VBox(checkoutButton);
         checkoutContainer.setAlignment(Pos.BOTTOM_RIGHT);
         checkoutContainer.setPadding(new Insets(80));
+        checkoutButton.setOnAction(e -> {user.addToCart(book);});
 
         root.setRight(checkoutContainer);
 
