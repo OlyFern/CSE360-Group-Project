@@ -28,4 +28,14 @@ public enum BookGenre {
             default  -> OTHER;
         };
     }
+
+    public static String bookGenreAsString(BookGenre genre) {
+        return switch (genre) {
+            case NATURAL_SCIENCE  -> "Natural Science";
+            case MATH             -> "Math";
+            case COMPUTERS        -> "Computers";
+            case ENGLISH_LANGUAGE -> "English Language";
+            default               -> "Other";
+        };
+    }
 }
