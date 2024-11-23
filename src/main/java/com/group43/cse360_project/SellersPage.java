@@ -314,7 +314,7 @@ public class SellersPage {
                                             genreBox, conditionBox, imageBox);
                 textFields.setSpacing(10);
                 textFields.setPadding(new Insets(10));
-                HBox header = createHeader(new Stage(), user);
+                HBox header = createHeader(stage, user);
                 nroot.setTop(header);
                 nroot.setCenter(textFields);
                 list.setPadding(new Insets(10));
