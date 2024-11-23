@@ -241,7 +241,8 @@ public class SellersPage {
                         ListBook.setVisible(true);
                         ListBook.setOnMouseClicked(e -> {
                             try {
-                                String uniqueID = UUID.randomUUID().toString().replace("-", "").substring(0, 6);
+                                //String uniqueID = UUID.randomUUID().toString().replace("-", "").substring(0, 6);
+
                                 BookDB.addNewBook(imageName, bookTitle, author, genreListing, bookCondition, "temp", (float) salePrice, quantity);
                                 System.out.println(imageName);
                             } catch (IOException ex) {
@@ -294,7 +295,7 @@ public class SellersPage {
 
                             atLeastOneImageUploaded[0] = true;
                             try {
-                                File resourcesDir = new File("src/main/resources/com/group43/cse360_project/pcitures");
+                                File resourcesDir = new File("src/main/resources/com/group43/cse360_project");
                                 if (!resourcesDir.exists()) {
                                     resourcesDir.mkdir(); // Create the resources folder if it doesn't exist
                                 }
@@ -305,7 +306,7 @@ public class SellersPage {
 
                                 // Destination file path in the resources directory
                                 File destinationFile = new File(resourcesDir, uniqueFileName);
-                                this.imageName = "src\\main\\resources\\com\\group43\\cse360_project\\pcitures\\" + uniqueFileName;
+                                this.imageName = uniqueFileName;//"src\\main\\resources\\com\\group43\\cse360_project\\pcitures\\" + uniqueFileName;
                                 // Copy the file from its original location to the resources folder
                                 java.nio.file.Files.copy(file.toPath(), destinationFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 

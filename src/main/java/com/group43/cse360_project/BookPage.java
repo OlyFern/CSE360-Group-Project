@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import static com.group43.cse360_project.BookGenre.bookGenreAsString;
 import static com.group43.cse360_project.Header.createHeader;
 
 public class BookPage {
@@ -61,7 +62,7 @@ public class BookPage {
 
         Label genreLabel = new Label("Genre:\t\t\t");
         genreLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        Label genre = new Label(book.getGenre().toString());
+        Label genre = new Label(bookGenreAsString(book.getGenre()));
         genre.setStyle("-fx-font-size: 14px");
         HBox genreBox = new HBox(genreLabel, genre);
         genreBox.setPadding(new Insets(10));

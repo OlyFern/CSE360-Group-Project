@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Objects;
 
 import static com.group43.cse360_project.BookDB.*;
 import static com.group43.cse360_project.Header.createHeader;
@@ -229,11 +230,12 @@ public class Browse {
         VBox entry = new VBox(5);
         entry.setAlignment(Pos.CENTER);
 
-        Rectangle coverImageView = new Rectangle(100, 140);
-        //Image coverImage = new Image(book.getKey() + ".png");
-        //ImageView coverImageView = new ImageView(coverImage);
-        //coverImageView.setFitWidth(100);
-       // coverImageView.setFitHeight(140);
+        //Rectangle coverImageView = new Rectangle(100, 140);
+        System.out.println(book.getKey());
+        Image coverImage = new Image(Objects.requireNonNull(Browse.class.getResourceAsStream(book.getKey())));
+        ImageView coverImageView = new ImageView(coverImage);
+        coverImageView.setFitWidth(100);
+        coverImageView.setFitHeight(140);
         coverImageView.setOnMouseClicked(e -> {
             try {
                 switchToBook(user, book);
