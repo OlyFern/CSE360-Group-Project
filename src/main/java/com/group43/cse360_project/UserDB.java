@@ -9,7 +9,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.LinkedList;
 import java.util.Objects;
 
 import static com.group43.cse360_project.UserType.parseUserTypeDBFlag;
