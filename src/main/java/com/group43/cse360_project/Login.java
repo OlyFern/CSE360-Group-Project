@@ -130,7 +130,7 @@ public class Login {
     }
     private void switchToBrowse(User user) throws IOException {
         Browse prototype = new Browse(stage);
-        Scene scene = prototype.browseScene(1, user);
+        Scene scene = prototype.browseScene(1, user, 0);
         stage.setScene(scene);
     }
     private void switchToPrototype() throws IOException {

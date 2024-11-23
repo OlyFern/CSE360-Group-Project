@@ -249,7 +249,7 @@ public class Checkout {
     private void changeScene(User user) throws IOException {
         System.out.println("Back Button Pressed!");
         Browse browse = new Browse(stage);
-        Scene scene = browse.browseScene(1, user);
+        Scene scene = browse.browseScene(1, user, 0);
         stage.setScene(scene);
     }
 

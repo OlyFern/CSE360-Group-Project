@@ -15,7 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import static com.group43.cse360_project.BookDB.getAllBooks;
+import static com.group43.cse360_project.BookDB.*;
 import static com.group43.cse360_project.Header.createHeader;
 
 public class Browse {
@@ -25,7 +25,8 @@ public class Browse {
         this.stage = stage;
     }
 
-    public Scene browseScene(int page, User user) throws IOException {
+    public Scene browseScene(int page, User user, int x) throws IOException {
+        int y = x;
         BorderPane root = new BorderPane();
         double sceneWidth = 1200;
         double sceneHeight = 675;
@@ -46,16 +47,47 @@ public class Browse {
         searchField.setPromptText("Search");
 
         Label genreLabel = new Label("Genre:");
-        CheckBox naturalScience = new CheckBox("Natural Science");
-        CheckBox computers = new CheckBox("Computers");
-        CheckBox math = new CheckBox("Math");
-        CheckBox english = new CheckBox("English Language");
-        CheckBox other = new CheckBox("Other");
+        RadioButton naturalScience = new RadioButton("Natural Science");
+        RadioButton computers = new RadioButton("Computers");
+        RadioButton math = new RadioButton("Math");
+        RadioButton english = new RadioButton("English Language");
+        RadioButton other = new RadioButton("Other");
+
 
         Label conditionLabel = new Label("Condition");
-        CheckBox likeNew = new CheckBox("Like New");
-        CheckBox modUsed = new CheckBox("Moderately Used");
-        CheckBox heavyUsed = new CheckBox("Heavily Used");
+        RadioButton likeNew = new RadioButton("Like New");
+        RadioButton modUsed = new RadioButton("Moderately Used");
+        RadioButton heavyUsed = new RadioButton("Heavily Used");
+
+        switch (y){
+            case 1: naturalScience.setSelected(true);
+            break;
+            case 2: computers.setSelected(true);
+            break;
+            case 3: math.setSelected(true);
+            break;
+            case 4: english.setSelected(true);
+            break;
+            case 5: other.setSelected(true);
+            break;
+            case 6: likeNew.setSelected(true);
+            break;
+            case 7: modUsed.setSelected(true);
+            break;
+            case 8: heavyUsed.setSelected(true);
+            break;
+        }
+        ToggleGroup typeGroup = new ToggleGroup();
+        naturalScience.setToggleGroup(typeGroup);
+        computers.setToggleGroup(typeGroup);
+        math.setToggleGroup(typeGroup);
+        english.setToggleGroup(typeGroup);
+        other.setToggleGroup(typeGroup);
+        likeNew.setToggleGroup(typeGroup);
+        modUsed.setToggleGroup(typeGroup);
+        heavyUsed.setToggleGroup(typeGroup);
+
+
 
         filterPanel.getChildren().addAll(
                 searchField, genreLabel,
@@ -69,9 +101,19 @@ public class Browse {
          * Book grid
          ******************************************************/
 
-        GridPane bookGrid = createBookGrid(page);
+        GridPane bookGrid = createBookGrid(page, x);
         bookGrid.setStyle("-fx-background-color: white; -fx-border-color: darkgrey;");
         root.setCenter(bookGrid);
+        typeGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                int selectedValue = getSelectedValue((RadioButton) newValue);
+                try {
+                    reloadBrowse(page, user, selectedValue);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
 
         /*******************************************************
          * Pagination (the arrows to change page)
@@ -85,23 +127,25 @@ public class Browse {
         Button nextButton = new Button("→");
         pagination.getChildren().addAll(prevButton, nextButton);
         pagination.setStyle("-fx-background-color: lightgrey");
+        int finalX = x;
         prevButton.setOnAction(e -> {
             if(page <= 1){
                 return;
             }else{
                 try {
-                    reloadBrowse(page-1, user);
+                    reloadBrowse(page-1, user, finalX);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
+
         nextButton.setOnAction(e -> {
             if(bookGrid.getChildren().isEmpty()){
                 return;
             }else{
                 try {
-                    reloadBrowse(page + 1, user);
+                    reloadBrowse(page + 1, user, finalX);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -113,7 +157,7 @@ public class Browse {
         return new Scene(root, sceneWidth, sceneHeight);
     }
 
-    private GridPane createBookGrid(int page) throws IOException {
+    private GridPane createBookGrid(int page, int x) throws IOException {
         /*******************************************************
          * GridPane
          * TODO: not create Book entry, access bookdb
@@ -122,8 +166,27 @@ public class Browse {
         grid.setHgap(20);
         grid.setVgap(20);
         grid.setPadding(new Insets(20));
-
         LinkedList<Book> books = getAllBooks();
+        switch (x){
+            case 1: books = getBooksByGenre(books, BookGenre.NATURAL_SCIENCE);
+            break;
+            case 2: books = getBooksByGenre(books, BookGenre.COMPUTERS);
+            break;
+            case 3: books = getBooksByGenre(books, BookGenre.MATH);
+            break;
+            case 4: books = getBooksByGenre(books, BookGenre.ENGLISH_LANGUAGE);
+            break;
+            case 5: books = getBooksByGenre(books, BookGenre.OTHER);
+            break;
+            case 6: books = getBooksByCondition(books, BookCondition.NEW);
+            break;
+            case 7: books = getBooksByCondition(books, BookCondition.USED);
+            break;
+            case 8: books = getBooksByCondition(books, BookCondition.HEAVY);
+            break;
+
+        }
+
 
         int i = 0;
         for (int row = 0; row < 2; row++) {
@@ -137,6 +200,29 @@ public class Browse {
         }
 
         return grid;
+    }
+
+    private int getSelectedValue(RadioButton selectedButton) {
+        switch (selectedButton.getText()) {
+            case "Natural Science":
+                return 1;
+            case "Computers":
+                return 2;
+            case "Math":
+                return 3;
+            case "English Language":
+                return 4;
+            case "Other":
+                return 5;
+            case "Like New":
+                return 6;
+            case "Moderately Used":
+                return 7;
+            case "Heavily Used":
+                return 8;
+            default:
+                return 0;
+        }
     }
 
     private VBox createBookEntry(Book book) {
@@ -172,9 +258,9 @@ public class Browse {
         return entry;
     }
 
-    private void reloadBrowse(int page, User user) throws IOException {
+    private void reloadBrowse(int page, User user, int x) throws IOException {
         Browse browse = new Browse(stage);
-        Scene scene = browse.browseScene(page, user);
+        Scene scene = browse.browseScene(page, user, x);
         stage.setScene(scene);
     }
 
