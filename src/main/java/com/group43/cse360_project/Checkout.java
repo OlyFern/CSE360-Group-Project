@@ -14,6 +14,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+
+import java.io.IOException;
 import java.util.LinkedList;
 
 
@@ -30,6 +32,8 @@ public class Checkout {
     private Stage stage;
     public Checkout(Stage stage) {
         this.stage = stage;
+        stage.setTitle("Checkout");
+
     }
 
     public Scene checkoutScene(User user) {
@@ -43,7 +47,7 @@ public class Checkout {
          * Texts
          */
         Label text = new Label("Checkout");
-        text.setStyle("-fx-font-size: 75px; -fx-text-fill: #264252; -fx-font-weight: bold;");
+        text.setStyle("-fx-font-size: 50px; -fx-text-fill: #264252; -fx-font-weight: bold;");
 
         Label shoppingCart = new Label("Shopping Cart");
         shoppingCart.setStyle("-fx-font-size: 20px; -fx-text-fill: #264252; -fx-font-weight: bold;");
@@ -60,8 +64,8 @@ public class Checkout {
          */
         Image logoImage = new Image(getClass().getResourceAsStream("logo.png"));
         ImageView logoImageView = new ImageView(logoImage);
-        logoImageView.setFitWidth(150);
-        logoImageView.setFitHeight(150);
+        logoImageView.setFitWidth(120);
+        logoImageView.setFitHeight(120);
 
         Image backArrow = new Image(getClass().getResourceAsStream("subdirectoryArrow.png"));
         ImageView backArrowImageView = new ImageView(backArrow);
@@ -72,17 +76,17 @@ public class Checkout {
         /*
          * Shapes
          */
-        Rectangle pricingBox = new Rectangle(160, 320);
+        Rectangle pricingBox = new Rectangle(160, 300);
         pricingBox.setFill(Color.web("#F4F4D8"));
         pricingBox.setStroke(Color.web("#264252"));
         pricingBox.setStrokeWidth(3);
 
-        Rectangle payment = new Rectangle(648, 689);
+        Rectangle payment = new Rectangle(500, 450);
         payment.setFill(Color.web("#F4F4D8"));
         payment.setStroke(Color.web("#264252"));
         payment.setStrokeWidth(3);
 
-        Rectangle cart = new Rectangle(648, 689);
+        Rectangle cart = new Rectangle(500, 450);
         cart.setFill(Color.web("#F4F4D8"));
         cart.setStroke(Color.web("#264252"));
         cart.setStrokeWidth(3);
@@ -92,14 +96,20 @@ public class Checkout {
         Button backButton = new Button("Back", backArrowImageView);
         backButton.setStyle("-fx-font-size: 30px; -fx-background-color: #264252; -fx-text-fill: white;");
         backButton.setContentDisplay(ContentDisplay.RIGHT);
-        backButton.setOnAction(e -> changeScene());
+        backButton.setOnAction(e -> {
+            try {
+                changeScene(user);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         Button clearCart = new Button("Clear Cart");
-        clearCart.setStyle("-fx-font-size: 15px; -fx-background-color: #E61610");
+        clearCart.setStyle("-fx-font-size: 10px; -fx-background-color: #E61610");
         clearCart.setOnAction(e -> clearList());
 
         Button orderButton = new Button("Place Order");
-        orderButton.setStyle("-fx-font-size: 55px; -fx-text-fill: white; -fx-background-color: green");
+        orderButton.setStyle("-fx-font-size: 40px; -fx-text-fill: white; -fx-background-color: green");
 
 
 
@@ -109,6 +119,9 @@ public class Checkout {
         titleBox.setSpacing(300);
         titleBox.getChildren().addAll(logoImageView, text, backButton);
         root.setTop(titleBox);
+
+
+
 
         VBox totals = new VBox(10);
         totals.getChildren().addAll(subtotalLabel, taxLabel, totalLabel);
@@ -125,17 +138,17 @@ public class Checkout {
          */
         //ScrollPane Checkout List
         ScrollPane scrollPane = new ScrollPane(listofItems);
-        scrollPane.setPrefSize(500,650);
+        scrollPane.setPrefSize(480,450);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         //HBox for the Cart
-        HBox cartlabel = new HBox(400, shoppingCart, clearCart);
+        HBox cartlabel = new HBox(275, shoppingCart, clearCart);
 
         //VBox to put into the stackpane Cart
         VBox checkoutCart = new VBox(cartlabel,scrollPane);
         checkoutCart.setAlignment(Pos.CENTER);
-        checkoutCart.setPadding(new Insets(10));
+        checkoutCart.setPadding(new Insets(20));
 
         //StackPane Cart
         StackPane cartbox = new StackPane();
@@ -147,8 +160,8 @@ public class Checkout {
 
         TextField email = new TextField();
         email.setPromptText("Enter Your Email");
-        email.setMaxWidth(600);
-        email.setPrefHeight(75);
+        email.setMaxWidth(400);
+        email.setPrefHeight(50);
 
         TextField cardNum = new TextField();
         //digits only
@@ -159,13 +172,13 @@ public class Checkout {
             return null;
         }));
         cardNum.setPromptText("Credit Card Number");
-        cardNum.setMaxWidth(600);
-        cardNum.setPrefHeight(75);
+        cardNum.setMaxWidth(400);
+        cardNum.setPrefHeight(50);
 
         TextField cardName = new TextField();
         cardName.setPromptText("Credit Card Holder's Name");
-        cardName.setMaxWidth(600);
-        cardName.setPrefHeight(75);
+        cardName.setMaxWidth(400);
+        cardName.setPrefHeight(50);
 
         TextField expDate = new TextField();
         //digits only
@@ -176,7 +189,7 @@ public class Checkout {
             return null;
         }));
         expDate.setPromptText("Expiry Date");
-        expDate.setPrefHeight(75);
+        expDate.setPrefHeight(50);
 
         TextField CVV = new TextField();
         //digits only
@@ -187,7 +200,7 @@ public class Checkout {
             return null;
         }));
         CVV.setPromptText("CVV");
-        CVV.setPrefHeight(75);
+        CVV.setPrefHeight(50);
 
 
         orderButton.setOnAction(e -> {
@@ -208,9 +221,9 @@ public class Checkout {
         });
 
         // Layout for payment layout
-        HBox creditCardInfo = new HBox(250, expDate, CVV);
+        HBox creditCardInfo = new HBox(20, expDate, CVV);
         creditCardInfo.setAlignment(Pos.CENTER);
-        VBox paylay = new VBox(30);
+        VBox paylay = new VBox(20);
         paylay.getChildren().addAll(paymentInfo, email, cardNum, cardName, creditCardInfo, orderButton);
         paylay.setAlignment(Pos.CENTER);
         //StackPane
@@ -219,12 +232,12 @@ public class Checkout {
         paymentlayout.setAlignment(Pos.CENTER);
         //middle of the screen
         HBox center = new HBox();
-        center.setAlignment(Pos.CENTER);
+        center.setAlignment(Pos.TOP_CENTER);
         center.setSpacing(5);
         center.getChildren().addAll(cartbox, priceBox, paymentlayout);
         root.setCenter(center);
 
-        return new Scene(root);
+        return new Scene(root, 1200, 600);
     }
 
     private void orderItems() {
@@ -233,8 +246,11 @@ public class Checkout {
         updateTotals();
     }
 
-    private void changeScene() {
+    private void changeScene(User user) throws IOException {
         System.out.println("Back Button Pressed!");
+        Browse browse = new Browse(stage);
+        Scene scene = browse.browseScene(1, user);
+        stage.setScene(scene);
     }
 
     private HBox createList(String title, int quantity, String condition, double price) {
@@ -243,10 +259,10 @@ public class Checkout {
         Label conditionLabel = new Label("Condition\n" + condition);
         Label priceLabel = new Label("Price\n $" + String.format("%.2f", price * quantity));
 
-        titleLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #264252");
-        quantityLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #264252");
-        conditionLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #264252");
-        priceLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #264252");
+        titleLabel.setStyle("-fx-font-size: 15px; -fx-text-fill: #264252");
+        quantityLabel.setStyle("-fx-font-size: 15px; -fx-text-fill: #264252");
+        conditionLabel.setStyle("-fx-font-size: 15px; -fx-text-fill: #264252");
+        priceLabel.setStyle("-fx-font-size: 15px; -fx-text-fill: #264252");
 
 
         Image delete = new Image(getClass().getResourceAsStream("delete.png"));
