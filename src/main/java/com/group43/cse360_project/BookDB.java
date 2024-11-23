@@ -59,6 +59,26 @@ public class BookDB {
         out.close();
     }
 
+    // Remove listings with quantity <= 0
+    public static void refresh() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/com/group43/cse360_project/books.db"));
+        StringBuffer buffer = new StringBuffer();
+        String line;
+        String[] book;
+
+        while ((line = reader.readLine()) != null) {
+            book = line.split(":");
+            if (Integer.parseInt(book[7]) <= 0)
+                continue;
+            buffer.append(line);
+            buffer.append("\n");
+        }
+
+        FileOutputStream out = new FileOutputStream("src/main/resources/com/group43/cse360_project/books.db");
+        out.write(buffer.toString().getBytes());
+        out.close();
+    }
+
     // Returns a linked list of all books in the database
     public static LinkedList<Book> getAllBooks() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/com/group43/cse360_project/books.db"));
