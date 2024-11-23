@@ -1,7 +1,7 @@
 // General methods for all User types and Users Database interaction
 // -----------------------------------------------------------------
 // Reads from "users.db" file
-//   - Format: username:password:privilege
+//   - Format: asuID:username:password:privilege
 
 package com.group43.cse360_project;
 
@@ -30,16 +30,6 @@ class UserDB {
       throw new RuntimeException(e);
     }
   }
-  
-  private static String userTypeToString(UserType type) {
-    switch (type) {
-      case ADMIN:  return "A";
-      case BUYER:  return "B";
-      case SELLER: return "S";
-      default:     return "R";
-    }
-  }
-
 
   public static User getUser(String asuID) throws IOException {
     var reader = new BufferedReader(new FileReader("src/main/resources/com/group43/cse360_project/users.db"));
@@ -73,8 +63,11 @@ class UserDB {
   }
 
   public static void addNewUser(String asuID, String passwd, UserType type, String name, String email) throws IOException {
-    var writer = new BufferedWriter(new FileWriter("src/main/resources/com/group43/cse360_project/users.db"));
-    writer.write(asuID + ":" + hashPassword(passwd) + ":" + userTypeToString(type) + ":" + name + ":" + email + "\n");
+    BufferedWriter writer = new BufferedWriter(new FileWriter(
+            "src/main/resources/com/group43/cse360_project/users.db",
+            true));
+    writer.write(asuID + ":" + hashPassword(passwd) + ":" + UserType.getUserTypeDBFlag(type) + ":" +
+                      name + ":" + email + "\n");
     writer.close();
   }
   
