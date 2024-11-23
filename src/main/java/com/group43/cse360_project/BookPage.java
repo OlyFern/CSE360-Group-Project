@@ -5,11 +5,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 import static com.group43.cse360_project.BookGenre.bookGenreAsString;
 import static com.group43.cse360_project.Header.createHeader;
@@ -34,9 +38,11 @@ public class BookPage {
 
         //Book
         //TODO: access Bookdb
-        Rectangle cover = new Rectangle(330, 462);
-        cover.setStyle("-fx-fill: white; -fx-stroke: darkgrey;");
-        VBox coverContainer = new VBox(cover);
+        Image coverImage = new Image(Objects.requireNonNull(Browse.class.getResourceAsStream(book.getKey())));
+        ImageView coverImageView = new ImageView(coverImage);
+        coverImageView.setFitWidth(330);
+        coverImageView.setFitHeight(462);
+        VBox coverContainer = new VBox(coverImageView);
         coverContainer.setAlignment(Pos.CENTER);
         coverContainer.setPadding(new Insets(50));
 

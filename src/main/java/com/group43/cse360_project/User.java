@@ -8,7 +8,7 @@ public class User {
     private UserType type;
     private String name;
     private String email;
-    private LinkedList<Book> cart;
+    private LinkedList<Book> cart = new LinkedList<Book>();
 
     public User(String asuID, String password, UserType type, String name, String email) {
         this.asuID = asuID;
