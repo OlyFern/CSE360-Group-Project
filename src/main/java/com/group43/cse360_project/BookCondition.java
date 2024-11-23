@@ -6,6 +6,17 @@ public enum BookCondition {
     HEAVY;
 
     // Database flag creation
+
+    @Override
+    public String toString() {
+        return switch (this.name()) {
+            case "NEW"   -> "New";
+            case "USED"  -> "Used";
+            case "HEAVY" -> "Heavily Used";
+            default -> throw new IllegalStateException("Unexpected value: " + this.name());
+        };
+    }
+
     public static String getBookConditionDBFlag(BookCondition cond) {
         return switch (cond) {
             case NEW   -> "N";

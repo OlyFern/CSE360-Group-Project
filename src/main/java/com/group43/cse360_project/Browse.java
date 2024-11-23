@@ -236,7 +236,7 @@ public class Browse {
        // coverImageView.setFitHeight(140);
         coverImageView.setOnMouseClicked(e -> {
             try {
-                switchToBook(user);
+                switchToBook(user, book);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -264,9 +264,9 @@ public class Browse {
         stage.setScene(scene);
     }
 
-    private void switchToBook(User user) throws IOException {
+    private void switchToBook(User user, Book bookListing) throws IOException {
         BookPage book = new BookPage(stage);
-        Scene scene = book.bookScene(user);
+        Scene scene = book.bookScene(user, bookListing);
         stage.setScene(scene);
     }
 
