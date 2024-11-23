@@ -1,7 +1,7 @@
 // General methods for all User types and Users Database interaction
 // -----------------------------------------------------------------
 // Reads from "users.db" file
-//   - Format: username:password:privilege
+//   - Format: asuID:username:password:privilege
 
 package com.group43.cse360_project;
 
