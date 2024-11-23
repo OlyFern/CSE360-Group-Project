@@ -260,6 +260,19 @@ public class Checkout {
         LinkedList<Book> cart = user.getCart();
         for(Book book: cart) {
             user.removeFromCart(book);
+            if(book.getQuantity() > 0) {
+                try {
+                    book.setQuantity(book.getQuantity() - 1);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        }
+        try {
+            BookDB.refresh();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         updateTotals();
     }

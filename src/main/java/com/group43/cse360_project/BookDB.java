@@ -46,7 +46,7 @@ public class BookDB {
                         BookGenre.getBookGenreDBFlag(book.getGenre()) + ":" +
                         BookCondition.getBookConditionDBFlag(book.getCondition()) + ":" +
                         book.getSeller() + ":" + Float.toString(book.getPrice()) + ":" +
-                        Integer.toString(book.getQuantity()) +
+                        Integer.toString(book.getQuantity()) + ":" +
                         ListingStatus.getListingStatusDBFlag(book.getListingStatus());
             }
 
