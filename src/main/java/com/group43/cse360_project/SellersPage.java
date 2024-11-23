@@ -1,5 +1,5 @@
 package com.group43.cse360_project;
-	
+
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,12 +33,15 @@ import static com.group43.cse360_project.Header.createHeader;
 
 public class SellersPage {
     private Stage stage;
+    public String imageName;
     public SellersPage(Stage stage){
         this.stage = stage;
     }
 
     public Scene getScene(User user) {
         {
+
+
             try {
                 Pane root = new Pane();
                 BorderPane nroot = new BorderPane();
@@ -97,7 +100,7 @@ public class SellersPage {
                 TextField SOriginalPriceField = new TextField();
                 SOriginalPriceField.setLayoutX(50);
                 SOriginalPriceField.setLayoutY(450);
-               // SOriginalPriceField.setPrefSize(750,30);
+                // SOriginalPriceField.setPrefSize(750,30);
                 SOriginalPriceField.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
 
                 SOriginalPriceField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -239,8 +242,8 @@ public class SellersPage {
                         ListBook.setOnMouseClicked(e -> {
                             try {
                                 String uniqueID = UUID.randomUUID().toString().replace("-", "").substring(0, 6);
-                                BookDB.addNewBook(uniqueID, bookTitle, author, genreListing, bookCondition, "temp", (float) salePrice, quantity);
-
+                                BookDB.addNewBook(imageName, bookTitle, author, genreListing, bookCondition, "temp", (float) salePrice, quantity);
+                                System.out.println(imageName);
                             } catch (IOException ex) {
                                 throw new RuntimeException(ex);
                             }
@@ -276,6 +279,8 @@ public class SellersPage {
                     deleteButtons[i].setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: red;");
                     deleteButtons[i].setPrefSize(20, 20);
                     deleteButtons[i].setVisible(false);
+                    System.out.println(imageName);
+
 
                     uploadButtons[i].setOnAction(event -> {
                         FileChooser fileChooser = new FileChooser();
@@ -288,6 +293,29 @@ public class SellersPage {
                             deleteButtons[index].setVisible(true);
 
                             atLeastOneImageUploaded[0] = true;
+                            try {
+                                File resourcesDir = new File("src/main/resources/com/group43/cse360_project/pcitures");
+                                if (!resourcesDir.exists()) {
+                                    resourcesDir.mkdir(); // Create the resources folder if it doesn't exist
+                                }
+
+                                // Generate a unique name for the copied file to avoid overwriting
+                                String uniqueFileName = UUID.randomUUID().toString() + "_" + file.getName();
+
+
+                                // Destination file path in the resources directory
+                                File destinationFile = new File(resourcesDir, uniqueFileName);
+                                this.imageName = "src\\main\\resources\\com\\group43\\cse360_project\\pcitures\\" + uniqueFileName;
+                                // Copy the file from its original location to the resources folder
+                                java.nio.file.Files.copy(file.toPath(), destinationFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+
+                                // Log or set a path variable if needed for later access
+                                System.out.println("Image copied to resources folder: " + destinationFile.getAbsolutePath());
+                                System.out.println(imageName);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                System.err.println("Failed to copy the image to the resources folder.");
+                            }
                         }
                     });
 
@@ -308,10 +336,10 @@ public class SellersPage {
                 HBox conditionBox = new HBox(SCondition, SLikeNew, SModerate, SHeavily);
                 conditionBox.setSpacing(10);
                 VBox textFields = new VBox(SBookTitle, SbookTitleField,
-                                            SAuthor, SAuthorField,
-                                            SOriginalPrice, SOriginalPriceField,
-                                            SQuantity, SBookQuantity,
-                                            genreBox, conditionBox, imageBox);
+                        SAuthor, SAuthorField,
+                        SOriginalPrice, SOriginalPriceField,
+                        SQuantity, SBookQuantity,
+                        genreBox, conditionBox, imageBox);
                 textFields.setSpacing(10);
                 textFields.setPadding(new Insets(10));
                 HBox header = createHeader(stage, user);
