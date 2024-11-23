@@ -64,9 +64,8 @@ public class Book {
 
     // Changing the quantity after a sale or new listing
     public void setQuantity(int quantity) throws IOException {
-        int old = quantity;
         this.quantity = quantity;
-        BookDB.updateQuantity(this, old);
+        BookDB.updateBook(this);
     }
 
     // String representation (Same as Database entry)

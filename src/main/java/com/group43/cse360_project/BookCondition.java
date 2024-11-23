@@ -22,4 +22,12 @@ public enum BookCondition {
             default  -> HEAVY;
         };
     }
+
+    public static String bookConditionAsString(BookCondition cond) {
+        return switch (cond) {
+            case NEW  -> "Like New";
+            case USED -> "Lightly Used";
+            default   -> "Heavily Used";
+        };
+    }
 }
