@@ -20,7 +20,7 @@ import java.util.LinkedList;
 
 
 public class Checkout {
-    private String conditions = "new";
+    private String conditions = "New";
     private Label subtotalLabel= new Label();
     private Label taxLabel= new Label();
     private Label totalLabel= new Label();
@@ -37,10 +37,24 @@ public class Checkout {
     }
 
     public Scene checkoutScene(User user) {
-        for (int i = 1; i <= 10; i++){
+        /*
+        for (int i = 1; i <= 8; i++){
             int amount = (int) (Math.random() * 10) + 1;
-            listofItems.getChildren().add(createList("NAME OF TITLE" + i, amount , conditions, 10));
+            listofItems.getChildren().add(createList(user,"NAME OF TITLE" + i, amount , conditions, 10));
         }
+        */
+
+        LinkedList<Book> cartUser = user.getCart();
+        if (cartUser != null) {
+            for (Book book : cartUser) {
+                String title = book.getTitle();
+                int quantity = book.getQuantity();
+                String condition = BookCondition.bookConditionAsString(book.getCondition());
+                double price = book.getPrice();
+                listofItems.getChildren().add(createList(user, title, quantity, condition, price));
+            }
+        }
+
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #F4F4D8;");
         /*
@@ -81,12 +95,12 @@ public class Checkout {
         pricingBox.setStroke(Color.web("#264252"));
         pricingBox.setStrokeWidth(3);
 
-        Rectangle payment = new Rectangle(500, 450);
+        Rectangle payment = new Rectangle(500, 500);
         payment.setFill(Color.web("#F4F4D8"));
         payment.setStroke(Color.web("#264252"));
         payment.setStrokeWidth(3);
 
-        Rectangle cart = new Rectangle(500, 450);
+        Rectangle cart = new Rectangle(500, 500);
         cart.setFill(Color.web("#F4F4D8"));
         cart.setStroke(Color.web("#264252"));
         cart.setStrokeWidth(3);
@@ -106,7 +120,7 @@ public class Checkout {
 
         Button clearCart = new Button("Clear Cart");
         clearCart.setStyle("-fx-font-size: 10px; -fx-background-color: #E61610");
-        clearCart.setOnAction(e -> clearList());
+        clearCart.setOnAction(e -> clearList(user));
 
         Button orderButton = new Button("Place Order");
         orderButton.setStyle("-fx-font-size: 40px; -fx-text-fill: white; -fx-background-color: green");
@@ -214,10 +228,10 @@ public class Checkout {
             System.out.println("Credit Card Holder's Name: " + holderName);
             System.out.println("Expiry Date: " + expiryDate);
             System.out.println("CVV: " + CVVnumber);
-            if (emailText.isEmpty() | cardNumber.isEmpty() | holderName.isEmpty() | expiryDate.isEmpty() | CVVnumber.isEmpty()){
+            if (emailText.isEmpty() | cardNumber.isEmpty() | holderName.isEmpty() | expiryDate.isEmpty() | CVVnumber.isEmpty() | !CVVnumber.matches("\\d{3}") | !expiryDate.matches("\\d{4}")){
                 System.out.println("Missing an item!!!");
             }
-            else orderItems();
+            else orderItems(user);
         });
 
         // Layout for payment layout
@@ -237,12 +251,16 @@ public class Checkout {
         center.getChildren().addAll(cartbox, priceBox, paymentlayout);
         root.setCenter(center);
 
-        return new Scene(root, 1200, 600);
+        return new Scene(root, 1200, 675);
     }
 
-    private void orderItems() {
+    private void orderItems(User user) {
         System.out.println("Price Paid: " + totalLabel.getText().substring(7));
         listofItems.getChildren().clear();
+        LinkedList<Book> cart = user.getCart();
+        for(Book book: cart) {
+            user.removeFromCart(book);
+        }
         updateTotals();
     }
 
@@ -253,7 +271,9 @@ public class Checkout {
         stage.setScene(scene);
     }
 
-    private HBox createList(String title, int quantity, String condition, double price) {
+    private HBox createList(User user, String title, int quantity, String condition, double price) {
+        LinkedList<Book> cart = user.getCart();
+
         Label titleLabel = new Label("Title\n" + title);
         Label quantityLabel = new Label("Quantity\n" + quantity);
         Label conditionLabel = new Label("Condition\n" + condition);
@@ -281,10 +301,25 @@ public class Checkout {
                 quantityLabel.setText("Quantity\n" + currentQuantity);
                 double updatePrice = price * currentQuantity;
                 priceLabel.setText("Price\n $" + String.format("%.2f", updatePrice));
+
+                for (Book book : cart){
+                    if (book.getTitle().equals(title) && BookCondition.bookConditionAsString(book.getCondition()).equals(condition)){
+                        try {
+                            book.setQuantity(currentQuantity);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        break;
+                    }
+                }
+
             }
-            else{
+            else {
                 listofItems.getChildren().remove(deleteButton.getParent());
+                cart.removeIf(book -> book.getTitle().equals(title)  && BookCondition.bookConditionAsString(book.getCondition()).equals(condition));
+
             }
+
             updateTotals();
         });
 
@@ -315,8 +350,13 @@ public class Checkout {
         totalLabel.setText("Total: $" + String.format("%.2f", total));
     }
 
-    private void clearList() {
+    private void clearList(User user) {
+        LinkedList<Book> cart = user.getCart();
+        for(Book book: cart) {
+            user.removeFromCart(book);
+        }
         listofItems.getChildren().clear();
+
         updateTotals();
     }
 }
