@@ -41,6 +41,9 @@ public class User {
     public void addToCart(String book){
         cart.add(book);
     }
+    public void removeFromCart(String book){
+        cart.remove(book);
+    }
 
 
 }
