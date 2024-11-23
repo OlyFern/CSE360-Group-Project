@@ -84,9 +84,9 @@ class UserDB {
                 line = user.getAsuID() + ":" + fields[1] + ":" + UserType.getUserTypeDBFlag(user.getType()) + ":" +
                         user.getName() + ":" + user.getEmail();
 
-                LinkedList<String> cart = user.getCart();
-                for (String book : cart)
-                    line += ":" + book;
+                LinkedList<Book> cart = user.getCart();
+                for (Book book : cart)
+                    line += ":" + book.getTitle();
             }
 
             buffer.append(line);
